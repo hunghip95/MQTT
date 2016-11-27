@@ -34,7 +34,7 @@ public class Brocker {
             System.exit(1);
         }
 
-        System.out.println("Server in waiting to accept user...");
+        System.out.println("Server is waiting to accept user...");
 
         listTopics.add(new Topic("Topic 1"));
         listTopics.add(new Topic("Topic 2"));

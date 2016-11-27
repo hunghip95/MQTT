@@ -28,13 +28,13 @@ public class MultiThread extends Thread{
             String check = (String) is.readObject();
 
             if (check.equals("Subscriber")){
-                Thread threadSub = new ThreadSub(socketOfServer, is, os);
-                threadSub.start();
+                SubscriberSite subscriberSite = new SubscriberSite(socketOfServer, is, os);
+                subscriberSite.start();
             }
             else{
                 if (check.equals("Publisher")){
-                    Thread threadPub = new ThreadPub(socketOfServer, is, os);
-                    threadPub.start();
+                    PublisherSite publisherSite = new PublisherSite(socketOfServer, is, os);
+                    publisherSite.start();
                 }
             }
 

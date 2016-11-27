@@ -16,6 +16,8 @@ public class User implements Serializable{
     private ObjectOutputStream out;
     private ObjectInputStream in;
 
+    public ArrayList<SendingTopic> sendingTopics = new ArrayList<>();
+
     private User(String userName, Socket socketOfServer) {
         this.userName = userName;
         this.socketOfServer = socketOfServer;
@@ -26,8 +28,6 @@ public class User implements Serializable{
     public User() {
 
     }
-
-
 
     public String getUserName() {
         return userName;
@@ -53,17 +53,13 @@ public class User implements Serializable{
         this.topics.add(topic) ;
     }
 
-//    public synchronized ObjectOutputStream getOut() {
-//        if ( null == out ) {
-//            try {
-//                out = new ObjectOutputStream(socketOfServer.getOutputStream());
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return out;
-//    }
+    public ArrayList<SendingTopic> getSendingTopics() {
+        return sendingTopics;
+    }
 
+    public synchronized void addSendingTopic(SendingTopic sendingTopic) {
+        this.sendingTopics.add(sendingTopic);
+    }
 
     public ObjectOutputStream getOut() {
         return out;
@@ -79,5 +75,23 @@ public class User implements Serializable{
 
     public void setIn(ObjectInputStream in) {
         this.in = in;
+    }
+
+    public boolean removeTopic(String topicName) {
+        for (String topic: topics){
+            if (topic.equals(topicName)){
+                topics.remove(topic);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public SendingTopic findSendingTopic(SendingTopic sendingTopic) {
+        for (SendingTopic sendingTopic1 : sendingTopics){
+            if (sendingTopic1.getTopicName().equals(sendingTopic.getTopicName())
+                    && sendingTopic1.getContent().equals(sendingTopic.getContent())) return sendingTopic1;
+        }
+        return null;
     }
 }

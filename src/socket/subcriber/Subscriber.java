@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by ASUS on 20/11/2016.
  */
-public class Subcriber {
+public class Subscriber {
     static ObjectOutputStream os = null;
     static ObjectInputStream is = null;
     static String userName;

@@ -1,5 +1,6 @@
 package socket.subcriber;
 
+import socket.object.SendingTopic;
 import socket.object.Topic;
 
 import java.io.BufferedReader;
@@ -8,8 +9,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import static socket.subcriber.Subcriber.is;
-import static socket.subcriber.Subcriber.listSubTopic;
+import static socket.subcriber.Subscriber.*;
 
 /**
  * Created by ASUS on 20/11/2016.
@@ -33,25 +33,39 @@ public class ThreadReceiving extends Thread {
             String message = (String) is.readObject();
             if (message.equals("New user")){
                 ArrayList<Topic> topics = (ArrayList<Topic>) is.readObject();
-                System.out.printf("You can Sub:");
+                System.out.println(is.readObject());
+                System.out.printf("--You can Sub:");
                 for (Topic topic : topics){
                     System.out.printf(topic.getTopicName() + " ");
                 }
+                System.out.println();
                 this.receive();
             }
             else{
                 if (message.equals("Existed user")){
                     ArrayList<String> subTopic = (ArrayList<String>) is.readObject();
                     listSubTopic = subTopic;
-                    System.out.printf("You Subscribed: ");
+                    System.out.printf("--You Subscribed: ");
                     for (String  topic : subTopic){
                         System.out.printf(topic + " ");
                     }
                     System.out.println();
                     ArrayList<Topic> topicCanSub = (ArrayList<Topic>) is.readObject();
-                    System.out.printf("You can Sub: ");
+                    System.out.printf("--You can Sub: ");
                     for (Topic topic : topicCanSub){
                         System.out.printf(topic.getTopicName() + " ");
+                    }
+                    System.out.println();
+                    String status = (String) is.readObject();
+                    if (status.equals("Welcome!")){
+                        System.out.println(status);
+                    }
+                    else {
+                        ArrayList<SendingTopic> sendingTopics = (ArrayList<SendingTopic>) is.readObject();
+                        System.out.println("--Pending Topics:");
+                        for (SendingTopic sendingTopic : sendingTopics){
+                            System.out.println(sendingTopic.getTopicName() + ": " + sendingTopic.getContent());
+                        }
                     }
                     this.receive();
                 }
@@ -71,9 +85,9 @@ public class ThreadReceiving extends Thread {
                 String status = (String) is.readObject();
                 if (status.equals("Sub ok")) {
                     String topicName = (String) is.readObject();
-                    System.out.println("Added " + topicName);
+                    System.out.println("--Added " + topicName);
                     listSubTopic.add(topicName);
-                    System.out.printf("List Topics now: ");
+                    System.out.printf("--List Topics now: ");
                     for (String topic : listSubTopic){
                         System.out.printf(topic + " ");
                     }
@@ -86,8 +100,29 @@ public class ThreadReceiving extends Thread {
                     System.out.println(faild);
                 }
                 else {
-                    if (message.equals("Publisher")){
-                        System.out.println(is.readObject());
+                    if (message.equals("Remove done")){
+                        String topicName = (String) is.readObject();
+                        listSubTopic.remove(topicName);
+                        System.out.println("--Removed " + topicName);
+                        System.out.printf("--List topics now: ");
+                        if (listSubTopic.size() > 0){
+                            for (String string : listSubTopic){
+                                System.out.printf(string + " ");
+                            }
+                            System.out.println();
+                        }
+                        else System.out.println("no Topic");
+
+                    }
+                    else {
+                        if (message.equals("Publisher")){
+                            SendingTopic sendingTopic = (SendingTopic) is.readObject();
+                            System.out.println(sendingTopic.getTopicName() + ": " + sendingTopic.getContent());
+                            os.writeObject("Received");
+                            os.flush();
+                            os.writeObject(sendingTopic);
+                            os.flush();
+                        }
                     }
                 }
             }
