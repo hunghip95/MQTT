@@ -11,8 +11,6 @@ public class Topic implements Serializable{
 
     public ArrayList<User> users = new ArrayList<>();
 
-    public ArrayList<User> pendingUsers = new ArrayList<>();
-
     public Topic(String topicName) {
         this.topicName = topicName;
     }
@@ -42,11 +40,4 @@ public class Topic implements Serializable{
         this.users = users;
     }
 
-    public ArrayList<User> getPendingUsers() {
-        return pendingUsers;
-    }
-
-    public synchronized void addPendingUser(User pendingUser) {
-        this.pendingUsers.add(pendingUser);
-    }
 }
