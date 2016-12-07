@@ -10,8 +10,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import static socket.brocker.Brocker.listTopics;
-import static socket.brocker.Brocker.listUsers;
+import static socket.brocker.Broker.listTopics;
+import static socket.brocker.Broker.listUsers;
 
 /**
  * Created by ASUS on 20/11/2016.
@@ -52,10 +52,9 @@ public class SubscriberSite {
                         }
                     }
                 }
-
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("One Client offline !");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -133,7 +132,7 @@ public class SubscriberSite {
                 os.flush();
 
                 if (userCheck.getSendingTopics().size()>0){
-                    os.writeObject("Pending Topics");
+                    os.writeObject("Missing Topics");
                     os.flush();
                     ArrayList<SendingTopic> sendingTopics = new ArrayList<>();
                     for (SendingTopic sendingTopic : userCheck.getSendingTopics()){
@@ -188,8 +187,6 @@ public class SubscriberSite {
         System.out.println("Received " + topicName);
         if (this.checkTopic(topicName,user)==true){
             user.addTopic(topicName);
-            os.writeObject("Notification");
-            os.flush();
             os.writeObject("Sub ok");
             os.flush();
             os.writeObject(topicName);

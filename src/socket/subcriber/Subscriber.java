@@ -43,17 +43,13 @@ public class Subscriber {
             threadSending.start();
             threadReceiving.start();
 
-            while (true){
-
-            }
         }
         catch (UnknownHostException e) {
             System.err.println("Trying to connect to unknown host: " + e);
         }
         catch (IOException e) {
-            System.err.println("IOException:  " + e);
+            System.out.println("Server offline!");
         }
 
-        System.out.println("Ended Client's session, Good bye");
     }
 }

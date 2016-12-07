@@ -9,7 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import static socket.brocker.Brocker.listTopics;
+import static socket.brocker.Broker.listTopics;
 
 /**
  * Created by ASUS on 20/11/2016.
@@ -52,7 +52,7 @@ public class PublisherSite {
                     }
                  }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Publisher offline !");
                 break;
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();

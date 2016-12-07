@@ -15,21 +15,15 @@ import static socket.subcriber.Subscriber.*;
  * Created by ASUS on 20/11/2016.
  */
 public class ThreadReceiving extends Thread {
-//    ObjectInputStream in = null;
-
     public Socket socketOfClient;
 
     public ThreadReceiving(Socket socketOfClient) {
         this.socketOfClient = socketOfClient;
-
     }
 
     @Override
     public void run() {
         try {
-//            is = new ObjectInputStream(socketOfClient.getInputStream());
-            BufferedReader dataIn = new BufferedReader(new InputStreamReader(System.in));
-
             String message = (String) is.readObject();
             if (message.equals("New user")){
                 ArrayList<Topic> topics = (ArrayList<Topic>) is.readObject();
@@ -72,7 +66,7 @@ public class ThreadReceiving extends Thread {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Server offline !");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -81,18 +75,15 @@ public class ThreadReceiving extends Thread {
     public void receive() throws IOException, ClassNotFoundException {
         while (true){
             String message = (String) is.readObject();
-            if (message.equals("Notification")){
-                String status = (String) is.readObject();
-                if (status.equals("Sub ok")) {
-                    String topicName = (String) is.readObject();
-                    System.out.println("--Added " + topicName);
-                    listSubTopic.add(topicName);
-                    System.out.printf("--List Topics now: ");
-                    for (String topic : listSubTopic){
-                        System.out.printf(topic + " ");
-                    }
-                    System.out.println();
+            if (message.equals("Sub ok")){
+                String topicName = (String) is.readObject();
+                System.out.println("--Added " + topicName);
+                listSubTopic.add(topicName);
+                System.out.printf("--List Topics now: ");
+                for (String topic : listSubTopic){
+                    System.out.printf(topic + " ");
                 }
+                System.out.println();
             }
             else {
                 if (message.equals("Faild")){
@@ -112,7 +103,6 @@ public class ThreadReceiving extends Thread {
                             System.out.println();
                         }
                         else System.out.println("no Topic");
-
                     }
                     else {
                         if (message.equals("Publisher")){
