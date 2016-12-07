@@ -56,7 +56,7 @@ public class ThreadReceiving extends Thread {
                     }
                     else {
                         ArrayList<SendingTopic> sendingTopics = (ArrayList<SendingTopic>) is.readObject();
-                        System.out.println("--Pending Topics:");
+                        System.out.println("--Missing Topics:");
                         for (SendingTopic sendingTopic : sendingTopics){
                             System.out.println(sendingTopic.getTopicName() + ": " + sendingTopic.getContent());
                         }

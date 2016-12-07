@@ -46,7 +46,7 @@ public class PublisherSite {
                                 outputStream.flush();
                             }
                             catch (IOException e) {
-                                e.printStackTrace();
+                                System.out.println("One Client offline !");
                             }
                         }
                     }
