@@ -191,14 +191,16 @@ public class SubscriberSite {
             os.flush();
             os.writeObject(topicName);
             os.flush();
-            for (Topic topic : listTopics){
-                if (topic.getTopicName().equals(topicName)){
-                    topic.addUser(user);
-                    System.out.printf(topic.getTopicName() + ": ");
-                    for (User user1 : topic.getUsers()){
-                        System.out.printf(user1.getUserName() + " ");
+            synchronized (listTopics){
+                for (Topic topic : listTopics){
+                    if (topic.getTopicName().equals(topicName)){
+                        topic.addUser(user);
+                        System.out.printf(topic.getTopicName() + ": ");
+                        for (User user1 : topic.getUsers()){
+                            System.out.printf(user1.getUserName() + " ");
+                        }
+                        System.out.println();
                     }
-                    System.out.println();
                 }
             }
         }
